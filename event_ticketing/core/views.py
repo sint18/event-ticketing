@@ -1,9 +1,11 @@
 # In accounts/views.py (or events/views.py)
-from rest_framework import viewsets, generics, filters
+from rest_framework import viewsets, generics, filters, status
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Event, Purchase, Ticket
+from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from .serializers import (
     EventSerializer,
@@ -12,6 +14,7 @@ from .serializers import (
     TicketPurchaseSerializer,
     TicketSerializer,
     TicketCreateUpdateSerializer,
+    AnalyticsSerializer,
 )
 from .permissions import (
     IsOrganizer,
@@ -112,3 +115,35 @@ class PurchaseHistoryView(generics.ListAPIView):
         return Purchase.objects.filter(user=self.request.user).order_by(
             "-purchase_time"
         )
+
+
+@extend_schema(tags=["Analytics"])
+class AnalyticsView(generics.GenericAPIView):
+
+    permission_classes = [IsOrganizer]  # Restrict access
+
+    def get(self, request, format=None):
+        # Calculate Total Tickets Sold
+        # Sum the 'quantity' field from the Purchase model
+        total_tickets_sold = (
+            Purchase.objects.aggregate(Sum("quantity"))["quantity__sum"] or 0
+        )
+
+        # Calculate Total Sales
+        # Sum the 'total_price' field from the Purchase model
+        total_sales = (
+            Purchase.objects.aggregate(Sum("total_price"))["total_price__sum"] or 0
+        )
+
+        # Calculate Number of Events
+        number_of_events = Event.objects.count()
+
+        # Prepare data using the serializer
+        analytics_data = {
+            "total_tickets_sold": total_tickets_sold,
+            "total_sales": total_sales,
+            "number_of_events": number_of_events,
+        }
+        serializer = AnalyticsSerializer(analytics_data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)

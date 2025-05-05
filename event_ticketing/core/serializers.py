@@ -90,3 +90,10 @@ class PurchaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Purchase
         fields = ("id", "ticket", "quantity", "total_price", "purchase_time")
+
+
+# ================ Analysis Serializers ================ #
+class AnalyticsSerializer(serializers.Serializer):
+    total_tickets_sold = serializers.IntegerField()
+    total_sales = serializers.DecimalField(max_digits=10, decimal_places=2)
+    number_of_events = serializers.IntegerField()
