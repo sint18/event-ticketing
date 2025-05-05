@@ -33,6 +33,9 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "rest_framework",
     "authentication",
+    "core",
+    "rest_framework_simplejwt",
+    "drf_spectacular",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -40,6 +43,27 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Event Ticketing Platform API",
+    "DESCRIPTION": "API for the Event Ticketing Platform",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,  # Set to False in production
+    "TAGS": [
+        {
+            "name": "Authentication",
+            "description": "Endpoints for user authentication and registration",
+        },
+        {
+            "name": "Event Management (Organizer)",
+            "description": "Endpoints for organizers to manage events",
+        },
+        {
+            "name": "Ticket Management (Organizer)",
+            "description": "Endpoints for organizers to manage tickets for their events",
+        },
+    ],
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -53,9 +77,12 @@ MIDDLEWARE = [
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
-    ]
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+AUTH_USER_MODEL = "authentication.User"
 
 ROOT_URLCONF = "event_ticketing.urls"
 

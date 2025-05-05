@@ -1,0 +1,5 @@
+[MASTER]
+load-plugins=pylint_django
+
+[MESSAGES CONTROL]
+disable=C0111,C0103,no-member
