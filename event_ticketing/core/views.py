@@ -119,8 +119,8 @@ class PurchaseHistoryView(generics.ListAPIView):
 
 @extend_schema(tags=["Analytics"])
 class AnalyticsView(generics.GenericAPIView):
-
     permission_classes = [IsOrganizer]  # Restrict access
+    serializer_class = AnalyticsSerializer
 
     def get(self, request, format=None):
         # Calculate Total Tickets Sold
