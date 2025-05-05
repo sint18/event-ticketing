@@ -28,7 +28,6 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     permission_classes = [
         IsOrganizer,
-        IsOrganizerOrReadOnly,
     ]  # Only organizers can manage events
 
     def get_serializer_class(self):
@@ -85,7 +84,7 @@ class TicketViewSet(viewsets.ModelViewSet):
         instance.delete()
 
 
-@extend_schema(tags=["Event Browse (User)"])
+@extend_schema(tags=["Event Browsing & Ticket Purchase (User)"])
 class EventUserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -95,7 +94,7 @@ class EventUserViewSet(viewsets.ReadOnlyModelViewSet):
     search_fields = ["event_name"]  # Search by event name
 
 
-@extend_schema(tags=["Ticket Purchase (User)"])
+@extend_schema(tags=["Event Browsing & Ticket Purchase (User)"])
 class TicketPurchaseView(generics.CreateAPIView):
     serializer_class = TicketPurchaseSerializer
     permission_classes = [IsAuthenticated]  # Only authenticated users can purchase
@@ -105,7 +104,7 @@ class TicketPurchaseView(generics.CreateAPIView):
         serializer.save()
 
 
-@extend_schema(tags=["Purchase History (User)"])
+@extend_schema(tags=["Event Browsing & Ticket Purchase (User)"])
 class PurchaseHistoryView(generics.ListAPIView):
     serializer_class = PurchaseSerializer
     permission_classes = [IsAuthenticated]  # Only authenticated users can view history
