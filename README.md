@@ -31,7 +31,7 @@ A Django REST API-based event ticketing platform that allows organizers to creat
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/sint18/event-ticketing.git
 cd event-ticketing/event_ticketing
 ```
 
