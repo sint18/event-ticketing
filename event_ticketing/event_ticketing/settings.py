@@ -159,3 +159,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# For development, I will the console backend to print emails to the console instead of actually sending them
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+FRONTEND_URL = "http://localhost:3000"  # Replace with actual frontend URL
