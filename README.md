@@ -12,6 +12,7 @@ A Django REST API-based event ticketing platform that allows organizers to creat
 - Analytics Dashboard
 - Password Reset System
 - Swagger Documentation
+- Admin Panel
 
 ## Tech Stack
 
